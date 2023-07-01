@@ -1,7 +1,8 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import AuthProvider from '../components/AuthProvider'
+import AuthProviders from './AuthProviders'
+import {getCurrentUser} from "../../libs/session"
 // import { NavLinks } from '../../constants'
 const NavLinks = [
   { href: '/', key: 'Inspiration', text: 'Inspiration' },
@@ -10,8 +11,9 @@ const NavLinks = [
   { href: '/', key: 'Career Advancement', text: 'Career Advancement' },
   { href: '/', key: 'Hire Developers', text: 'Hire Developers' }
 ];
-const Navbar = () => {
-  const session =null;
+const Navbar =  async () => {
+  const session = await getCurrentUser();
+  
   return (
     <nav className="flexBetween navbar
     ">
@@ -31,22 +33,24 @@ const Navbar = () => {
 ))}
         </ul>
       </div>
-      {/* <div className="flexCenter"
+      <div className="flexCenter"
       
       >
-{ session ? (
+{ session?.user? (
         <>
-       
+        {session?.user?.image &&
+         <Image src={session.user.image} width={40} height={40} alt='logo'
+         className='rounded-full'/>}
         <Link href ="/create-project"></Link>
         </>
        
       ):
       (
-        <AuthProvider/>
+        <AuthProviders/>
       )
     }
-      </div> */}
-      <AuthProvider/>
+      </div>
+     
     </nav>
   )
 }
