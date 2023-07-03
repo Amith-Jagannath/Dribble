@@ -1,26 +1,45 @@
 "use client";
-import { SessionInterface } from "@/common.types";
+import { FormState, SessionInterface } from "@/common.types";
 import Image from "next/image";
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useState } from "react";
 import FormField from "./FormField";
+import Button from "./Button";
+import CustomMenu from "./CustomMenu";
+import { categoryFilters } from "@/constants";
 type Props = {
   type: string;
   session: SessionInterface;
 };
 
 const ProjectForm = ({ type, session }: Props) => {
+  const [isSubmitting, setsubmitting] = useState(false);
   const handleFromSubmit = (e: React.FormEvent) => {};
-  const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {};
-  const handleStateChange = (fieldName: string, value: string) => {};
-  const form = {
-    image: "",
-    title: "",
+  const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.includes("image")) {
+      return alert("please upload an image file");
+    }
+    const reader = new FileReader();
   };
+  const handleStateChange = (fieldName: string, value: string) => {
+    setForm((prevState) => ({ ...prevState, [fieldName]: value }));
+  };
+
+  const [form, setForm] = useState<FormState>({
+    title: "",
+    description: "",
+    image: "",
+    liveSiteUrl: "",
+    githubUrl: "",
+    category: "",
+  });
 
   return (
     <form onSubmit={handleFromSubmit} className="flextStart form">
       <div className="flexStart form_image-container">
-        <label htmlFor="poster" className="flexCenter from_image-label">
+        <label htmlFor="poster" className="flexCenter form_image-label">
           {!form.image && "Choose a poster for your project"}
         </label>
 
@@ -42,11 +61,43 @@ const ProjectForm = ({ type, session }: Props) => {
         )}
       </div>
       <FormField
-        title="title"
+        title="Title"
         state={form.title}
         placeholder="Flexible"
         setState={(value) => handleStateChange("title", value)}
       />
+      <FormField
+        title="Decription"
+        state={form.description}
+        placeholder="Showcase and discover remarkable discover"
+        setState={(value) => handleStateChange("description", value)}
+      />
+      <FormField
+        type="url"
+        title="Website Url"
+        state={form.liverSiteUrl}
+        placeholder="https:www."
+        setState={(value) => handleStateChange("liverSiteUrl", value)}
+      />
+      <FormField
+        type="url"
+        title="Github Url"
+        state={form.githubUrl}
+        placeholder="https://github.com"
+        setState={(value) => handleStateChange("githubUrl", value)}
+      />
+
+      <div className="flexStart w-full">
+        <Button
+          title={
+            isSubmitting
+              ? `${type === "create" ? "Creating" : "Editing"}`
+              : `${type === "create" ? "Create" : "Edit"}`
+          }
+          leftIcon={isSubmitting ? "" : "/plus.svg"}
+          isSubmitting={isSubmitting}
+        />
+      </div>
     </form>
   );
 };

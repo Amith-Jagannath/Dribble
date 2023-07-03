@@ -18,7 +18,7 @@ const FormField = ({
   return (
     <div className="flexStart flex-col w-full gap-4">
       <label htmlFor="" className="w-full text-gray-100">
-        Title
+        {title}
       </label>
 
       {isTextArea ? (
