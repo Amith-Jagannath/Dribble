@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emailjs/browser": "^3.11.0",
     "@headlessui/react": "^1.7.15",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "20.3.2",
