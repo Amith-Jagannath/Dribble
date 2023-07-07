@@ -8,7 +8,11 @@ import FormField from "./FormField";
 import Button from "./Button";
 import CustomMenu from "./CustomMenu";
 import { categoryFilters } from "../../constants";
-import { createNewProject, fetchToken } from "../../libs/actions";
+import {
+  createNewProject,
+  fetchToken,
+  updateProject,
+} from "../../libs/actions";
 import { FormState, ProjectInterface, SessionInterface } from "@/common.types";
 
 type Props = {
@@ -69,6 +73,10 @@ const ProjectForm = ({ type, session, project }: Props) => {
       if (type === "create") {
         await createNewProject(form, session?.user?.id, token);
         console.log("yes");
+        router.push("/");
+      }
+      if (type === "edit") {
+        await updateProject(form, project?.id as string, token);
         router.push("/");
       }
     } catch (error) {

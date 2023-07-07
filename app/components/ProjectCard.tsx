@@ -4,6 +4,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import Image from "next/image";
+
 type Props = {
   id: string;
   image: string;
@@ -13,15 +14,20 @@ type Props = {
   userId: string;
 };
 const ProjectCard = ({ id, image, title, name, avatarUrl, userId }: Props) => {
-  const [views, setViews] = useState(0);
+  const [views, setViews] = useState(" ");
   const [likes, setLikes] = useState(0);
 
   useEffect(() => {
     const generateRandomValues = () => {
-      const randomViews = Math.floor(Math.random() * 1000);
+      const randomViews = Math.floor(Math.random() * 5000); // Generating random views up to 5000
+      const formattedViews =
+        randomViews >= 1000
+          ? `${(randomViews / 1000).toFixed(1)}k`
+          : String(randomViews);
+
       const randomLikes = Math.floor(Math.random() * 100);
 
-      setViews(randomViews);
+      setViews(formattedViews);
       setLikes(randomLikes);
     };
 
@@ -30,7 +36,7 @@ const ProjectCard = ({ id, image, title, name, avatarUrl, userId }: Props) => {
   return (
     <div className="flexStart flex-col rounded-2xl drop-shadow-card">
       <Link
-        href={`/projects/${id}`}
+        href={`/project/${id}`}
         className="flexCenter group relative w-full h-full"
       >
         <Image
