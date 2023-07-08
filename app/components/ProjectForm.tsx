@@ -83,7 +83,7 @@ const ProjectForm = ({ type, session, project }: Props) => {
       alert(
         `Failed to ${
           type === "create" ? "create" : "edit"
-        } a project. Try again!`
+        } a project. Since github and website link should be in https:www format`
       );
     } finally {
       setSubmitting(false);

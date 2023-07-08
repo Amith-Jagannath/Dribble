@@ -5,6 +5,7 @@ import AuthProviders from "./AuthProviders";
 import { getCurrentUser } from "../../libs/session";
 
 import ProfileMenu from "./ProfileMenu";
+import Button from "./Button";
 // import { NavLinks } from '../../constants'
 const NavLinks = [
   { href: "/", key: "Inspiration", text: "Inspiration" },
@@ -41,8 +42,12 @@ const Navbar = async () => {
       <div className="flexCenter">
         {session?.user ? (
           <>
+            <button className=" mx-2 flexCenter gap-3 px-4 py-3 bg-primary-purple rounded-xl text-sm font-medium max-md:w-full">
+              <Link className="text-white" href="/create-project">
+                share
+              </Link>
+            </button>
             <ProfileMenu session={session} />
-            <Link href="/create-project">share</Link>
           </>
         ) : (
           <AuthProviders />
