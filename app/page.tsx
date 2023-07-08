@@ -1,8 +1,18 @@
-import { fetchAllProjects } from "@/libs/actions";
-import Image from "next/image";
-import Categories from "./components/Categories";
-import ProjectCard from "./components/ProjectCard";
 import { ProjectInterface } from "@/common.types";
+import Categories from "./components/Categories";
+import LoadMore from "./components/LoadMore";
+import ProjectCard from "./components/ProjectCard";
+import { fetchAllProjects } from "../libs/actions";
+
+type SearchParams = {
+  category?: string | null;
+  endcursor?: string | null;
+};
+
+type Props = {
+  searchParams: SearchParams;
+};
+
 type ProjectSearch = {
   projectSearch: {
     edges: { node: ProjectInterface }[];
@@ -15,53 +25,52 @@ type ProjectSearch = {
   };
 };
 
-import React from "react";
-import LoadMore from "./components/LoadMore";
-type SearchParams = {
-  category?: string | null;
-  endCursor: string | null;
-};
-type Props = {
-  searchParams: SearchParams;
-};
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
 export const revalidate = 0;
+
 const Home = async ({ searchParams: { category } }: Props) => {
-  const data = (await fetchAllProjects(category || "")) as ProjectSearch;
+  const data = (await fetchAllProjects(
+    category === null ? "" : category
+  )) as ProjectSearch;
+
   const projectsToDisplay = data?.projectSearch?.edges || [];
-  if (projectsToDisplay.length == 0) {
+
+  if (projectsToDisplay.length === 0) {
     return (
       <section className="flexStart flex-col paddings">
         <Categories />
+
         <p className="no-result-text text-center">
-          No projects found, go create first
+          No projects found, go create some first.
         </p>
       </section>
     );
   }
-  const pagination = data?.projectSearch?.pageInfo;
+
   return (
-    <section className="flex-start flex-col paddings mb-16">
+    <section className="flexStart flex-col paddings mb-16">
       <Categories />
+
       <section className="projects-grid">
         {projectsToDisplay.map(({ node }: { node: ProjectInterface }) => (
           <ProjectCard
-            key={node?.id}
+            key={`${node?.id}`}
             id={node?.id}
-            name={node?.createdBy?.name}
             image={node?.image}
             title={node?.title}
-            avatarUrl={node?.createdBy?.avatarUrl}
-            userId={node?.createdBy?.id}
+            name={node?.createdBy.name}
+            avatarUrl={node?.createdBy.avatarUrl}
+            userId={node?.createdBy.id}
           />
         ))}
       </section>
+
       <LoadMore
-        startCursor={pagination.startCursor}
-        endCursor={pagination.endCursor}
-        hasPreviousPage={pagination.hasPreviousPage}
-        hasNextPage={pagination.hasNextPage}
+        startCursor={data?.projectSearch?.pageInfo?.startCursor}
+        endCursor={data?.projectSearch?.pageInfo?.endCursor}
+        hasPreviousPage={data?.projectSearch?.pageInfo?.hasPreviousPage}
+        hasNextPage={data?.projectSearch?.pageInfo.hasNextPage}
       />
     </section>
   );
