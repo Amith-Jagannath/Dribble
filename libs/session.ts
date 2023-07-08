@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth/next";
 import { NextAuthOptions, User } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
-import jsonwebtoken from 'jsonwebtoken'
+import jsonwebtoken from "jsonwebtoken";
 import { JWT } from "next-auth/jwt";
 
 import { createUser, getUser } from "./actions";
@@ -25,7 +25,7 @@ export const authOptions: NextAuthOptions = {
         },
         secret
       );
-      
+
       return encodedToken;
     },
     decode: async ({ secret, token }) => {
@@ -41,8 +41,8 @@ export const authOptions: NextAuthOptions = {
     async session({ session }) {
       const email = session?.user?.email as string;
 
-      try { 
-        const data = await getUser(email) as { user?: UserProfile }
+      try {
+        const data = (await getUser(email)) as { user?: UserProfile };
 
         const newSession = {
           ...session,
@@ -58,14 +58,18 @@ export const authOptions: NextAuthOptions = {
         return session;
       }
     },
-    async signIn({ user }: {
-      user: AdapterUser | User
-    }) {
+    async signIn({ user }: { user: AdapterUser | User }) {
       try {
-        const userExists = await getUser(user?.email as string) as { user?: UserProfile }
-        
+        const userExists = (await getUser(user?.email as string)) as {
+          user?: UserProfile;
+        };
+
         if (!userExists.user) {
-          await createUser(user.name as string, user.email as string, user.image as string)
+          await createUser(
+            user.name as string,
+            user.email as string,
+            user.image as string
+          );
         }
 
         return true;
@@ -78,7 +82,7 @@ export const authOptions: NextAuthOptions = {
 };
 
 export async function getCurrentUser() {
-  const session = await getServerSession(authOptions) as SessionInterface;
+  const session = (await getServerSession(authOptions)) as SessionInterface;
 
   return session;
 }
