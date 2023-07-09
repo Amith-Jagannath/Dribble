@@ -28,7 +28,7 @@ const Navbar = async () => {
       "
       >
         <Link href="/">
-          <Image src="/logo.svg" alt="logo" width={115} height={43}></Image>
+          <h3 className="cursive">Flexify</h3>
         </Link>
 
         <ul className="xl:flex hidden text-sm gap-7">

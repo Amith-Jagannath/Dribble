@@ -4,6 +4,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pacifico&display=swap");
+.cursive {
+  font-family: "Great Vibes", cursive;
+  font-weight: bold;
+  font-size: 30px;
+}
+
 * {
   margin: 0;
   padding: 0;
