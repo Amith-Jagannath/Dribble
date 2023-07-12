@@ -100,7 +100,7 @@ const Footer = () => {
         <div className="items-start flex-col">
           <h3 className="cursive">Flexify</h3>
           <p className="text-start text-sm font-normal mt-5 max-w-xs">
-            Flexible is a worlds's leading community for creatives to
+            Flexify is a worlds's leading community for creatives to
             share,grow, and get hired
           </p>
 
@@ -142,7 +142,7 @@ const Footer = () => {
       </div>
 
       <div className="flexBetween footer_copyright">
-        <p>@2023 Flexible.All rights reserved</p>
+        <p>@2023 Flexify.All rights reserved</p>
         <p>
           <span className="text-gray font-semiBold ">10,214 </span>projects
           submitted
