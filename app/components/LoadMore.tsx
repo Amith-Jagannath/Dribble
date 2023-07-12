@@ -1,63 +1,7 @@
-// "use client";
-// import React from "react";
-// import Button from "./Button";
-// import { useRouter } from "next/navigation";
-// type Props = {
-//   startCursor: string;
-//   endCursor: string;
-//   hasPreviousPage: boolean;
-//   hasNextPage: boolean;
-// };
-
-// const LoadMore = ({
-//   startCursor,
-//   endCursor,
-//   hasPreviousPage,
-//   hasNextPage,
-// }: Props) => {
-//   const router = useRouter();
-//   const handleNavigation = (direction: string) => {
-//     const currentParams = new URLSearchParams(window.location.search);
-//     if (direction === "next" && hasNextPage) {
-//       currentParams.delete("startcursor");
-//       currentParams.set("endcursor", endCursor);
-//     } else if (direction === "first" && hasPreviousPage) {
-//       currentParams.delete("endcursor");
-//       currentParams.set("startcursor", startCursor);
-//     }
-//     const newSearchParams = currentParams.toString();
-//     const newPathname = `${window.location.pathname}? ${newSearchParams}`;
-//     router.push(newSearchParams);
-//   };
-
-//   return (
-//     <div>
-//       {hasPreviousPage && (
-//         <Button
-//           type="button"
-//           title="First Page"
-//           handleClick={() => handleNavigation("first")}
-//         />
-//       )}
-//       {hasNextPage && (
-//         <Button
-//           type="button"
-//           title="First Page"
-//           handleClick={() => handleNavigation("next")}
-//         />
-//       )}
-//     </div>
-//   );
-// };
-
-// export default LoadMore;
-
 "use client";
-
-import { useRouter } from "next/navigation";
-
+import React from "react";
 import Button from "./Button";
-
+import { useRouter } from "next/navigation";
 type Props = {
   startCursor: string;
   endCursor: string;
@@ -72,35 +16,33 @@ const LoadMore = ({
   hasNextPage,
 }: Props) => {
   const router = useRouter();
-
-  const handleNavigation = (type: string) => {
+  const handleNavigation = (direction: string) => {
     const currentParams = new URLSearchParams(window.location.search);
-
-    if (type === "prev" && hasPreviousPage) {
-      currentParams.delete("endcursor");
-      currentParams.set("startcursor", startCursor);
-    } else if (type === "next" && hasNextPage) {
+    if (direction === "next" && hasNextPage) {
       currentParams.delete("startcursor");
       currentParams.set("endcursor", endCursor);
+    } else if (direction === "first" && hasPreviousPage) {
+      currentParams.delete("endcursor");
+      currentParams.set("startcursor", startCursor);
     }
-
     const newSearchParams = currentParams.toString();
-    const newPathname = `${window.location.pathname}?${newSearchParams}`;
-
-    router.push(newPathname);
+    const newPathname = `${window.location.pathname}? ${newSearchParams}`;
+    router.push(newSearchParams);
   };
 
   return (
-    <div className="w-full flexCenter gap-5 mt-10">
+    <div>
       {hasPreviousPage && (
         <Button
+          type="button"
           title="First Page"
-          handleClick={() => handleNavigation("prev")}
+          handleClick={() => handleNavigation("first")}
         />
       )}
       {hasNextPage && (
         <Button
-          title="Next Shots"
+          type="button"
+          title="First Page"
           handleClick={() => handleNavigation("next")}
         />
       )}
