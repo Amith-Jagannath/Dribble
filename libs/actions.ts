@@ -7,9 +7,10 @@ import {
   projectsQuery,
   updateProjectMutation,
 } from "../graphql";
-import { createUserMutation } from "../graphql";
-import { ProjectForm } from "@/common.types";
+import { createUserMutation, updateProfileMutation } from "../graphql";
+import { ProjectForm, ProfileForm } from "@/common.types";
 import { createProjectMutation } from "../graphql";
+// import ProfileForm from "@/app/components/ProfileForm";
 const isProduction = process.env.NODE_ENV === "production";
 const apiUrl = isProduction
   ? process.env.NEXT_PUBLIC_GRAFBASE_API_URL || ""
@@ -137,4 +138,29 @@ export const updateProject = async (
   };
 
   return makeGraphQLRequest(updateProjectMutation, variables);
+};
+
+export const updateProfile = async (
+  form: ProfileForm,
+  creatorId: string,
+  token: string
+) => {
+  client.setHeader("Authorization", `Bearer ${token}`);
+  client.setHeader("x-api-key", apiKey);
+  console.log(form.description);
+  console.log(creatorId);
+  // console.log(form.image);
+  console.log(form.githubUrl);
+  console.log(form.linkedinUrl);
+
+  const imageUrl = await uploadImage(form.avatarUrl);
+  form = { ...form, avatarUrl: imageUrl.url };
+  client.setHeader("Authorization", `Bearer ${token}`);
+  client.setHeader("x-api-key", apiKey);
+  const variables = {
+    id: creatorId,
+    input: form,
+  };
+
+  return makeGraphQLRequest(updateProfileMutation, variables);
 };

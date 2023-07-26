@@ -29,7 +29,21 @@ export const updateProjectMutation = `
 		}
 	}
 `;
-
+export const updateProfileMutation = `
+mutation UpdateProfile($id: ID!, $input: UserUpdateInput!){
+  userUpdate(by:{id:$id},input:$input){
+    user {
+      name
+      email
+      avatarUrl
+      description
+      githubUrl
+      linkedinUrl
+      id
+    }
+  }
+}
+`;
 export const deleteProjectMutation = `
   mutation DeleteProject($id: ID!) {
     projectDelete(by: { id: $id }) {

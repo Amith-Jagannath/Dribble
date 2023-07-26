@@ -10,7 +10,7 @@ import { SessionInterface } from "../../common.types";
 
 const ProfileMenu = ({ session }: { session: SessionInterface }) => {
   const [openModal, setOpenModal] = useState(false);
-
+  console.log(session);
   return (
     <div className="flexCenter z-10 flex-col relative">
       <Menu as="div">
@@ -18,9 +18,9 @@ const ProfileMenu = ({ session }: { session: SessionInterface }) => {
           className="flexCenter"
           onMouseEnter={() => setOpenModal(true)}
         >
-          {session?.user?.image && (
+          {session?.user?.avatarUrl && (
             <Image
-              src={session.user.image}
+              src={session.user.avatarUrl}
               width={40}
               height={40}
               className="rounded-full"
@@ -45,9 +45,9 @@ const ProfileMenu = ({ session }: { session: SessionInterface }) => {
             onMouseLeave={() => setOpenModal(false)}
           >
             <div className="flex flex-col items-center gap-y-4">
-              {session?.user?.image && (
+              {session?.user?.avatarUrl && (
                 <Image
-                  src={session?.user?.image}
+                  src={session?.user?.avatarUrl}
                   className="rounded-full"
                   width={80}
                   height={80}
@@ -80,6 +80,11 @@ const ProfileMenu = ({ session }: { session: SessionInterface }) => {
                   className="text-sm"
                 >
                   Profile
+                </Link>
+              </Menu.Item>
+              <Menu.Item>
+                <Link href="/update-profile" className="text-sm">
+                  Edit Profile
                 </Link>
               </Menu.Item>
             </div>
